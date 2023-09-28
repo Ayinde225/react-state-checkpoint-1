@@ -1,25 +1,60 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import img from "./mypicture.jpg";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      person: {
+        fullName: "Mustapha Ayinde Abdul Aziz",
+        bio: "un developpeur passionné par le monde du web",
+        imgSrc: img,
+        profession: "Developpeur React js",
+      },
+      show: false,
+      interval: 0,
+    };
+  }
+
+  toggleDisplay = () => {
+    this.setState((prevState) => ({ show: !prevState.show }));
+  };
+
+  componentDidMount() {
+    this.intervalId = setInterval(() => {
+      this.setState((prevState) => ({ interval: prevState.interval + 1 }));
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  render() {
+    const { fullName, bio, imgSrc, profession } = this.state.person;
+    const { show, interval } = this.state;
+
+    return (
+      <div className="App">
+        <h1>MON PROFILE</h1>
+        <button className="toggle-button" onClick={this.toggleDisplay}>
+          Afficher le Profil de Ayinde
+        </button>
+        {show && (
+          <div className="profil">
+            <img className="App-img" src={imgSrc} alt={imgSrc} />
+            <p>Nom: {fullName}</p>
+            <p>Biographie: {bio}</p>
+            <p>Profession: {profession}</p>
+          </div>
+        )}
+        <p className="interval">
+          Temps depuis le montage du composant : {interval} secondes
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
 export default App;
